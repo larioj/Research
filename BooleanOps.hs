@@ -1,6 +1,6 @@
 #!/usr/bin/env runhaskell
 
-import Data.List (intercalate)
+import           Data.List (intercalate)
 
 forAll :: [a] -> (a -> Bool) -> Bool
 forAll = flip all

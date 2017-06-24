@@ -47,22 +47,22 @@ inverses (*) =
       && (inv*x == id)
 
 names =
-  "zero" :
-    "and" :
-    "" :
-    "fst" :
-    "" :
-    "snd" :
-    "xor" :
-    "or" :
-    "nor":
-    "iff" :
+  "zero"   :
+    "and"  :
+    ""     :
+    "fst"  :
+    ""     :
+    "snd"  :
+    "xor"  :
+    "or"   :
+    "nor"  :
+    "iff"  :
     "nsnd" :
-    "" :
+    ""     :
     "nfst" :
-    "" :
+    ""     :
     "nand" :
-    "one" :
+    "one"  :
     []
 
 tally (name, (index, op)) =

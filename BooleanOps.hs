@@ -19,50 +19,56 @@ ops =
         an True False  = c
         an True True   = d
     in return an
-    
-commutes' (*) =
+
+commutes (*) =
   forAll bool $ \a ->
   forAll bool $ \b ->
     a * b == b * a
 
-commutes (*) =
-  all id
-    (bool >>= \a  ->
-     bool >>= \b  ->
-       return (a * b == b * a))
-
-associates' (*) =
+associates (*) =
   forAll bool $ \a ->
   forAll bool $ \b ->
   forAll bool $ \c ->
     (a * b) * c == a * (b * c)
 
-associates (*) =
-  all id
-    (bool >>= \a ->
-     bool >>= \b ->
-     bool >>= \c ->
-       return ((a * b) * c == a * (b * c)))
-
 identity (*) =
-  any id
-    ((flip map) bool (\i ->
-      all id
-        (bool >>= \x ->
-           return ((i*x == x) && (x*i == x)))))
+  exists bool $ \id ->
+  forAll bool $ \x ->
+    (id*x == x)
+      && (x*id == x)
 
 inverses (*) =
-  any id
-    ((flip map) bool (\i ->
-      all id
-        ((flip map) bool (\x ->
-          any id
-            ((flip map) bool (\y ->
-              ((i*x == x) && (x*i == x) && (x*y == i) && (y*x == i))))))))
+  exists bool $ \id ->
+  forAll bool $ \x ->
+  exists bool $ \inv ->
+    (id*x == x)
+      && (x*id == x)
+      && (x*inv == id)
+      && (inv*x == id)
 
-tally (index, op) =
-  intercalate " " 
-    ((pad 5 ("a" ++ (show index))) :
+names =
+  "zero" :
+    "and" :
+    "" :
+    "fst" :
+    "" :
+    "snd" :
+    "xor" :
+    "or" :
+    "nor":
+    "iff" :
+    "nsnd" :
+    "" :
+    "nfst" :
+    "" :
+    "nand" :
+    "one" :
+    []
+
+tally (name, (index, op)) =
+  intercalate " "
+    ( (pad 7 name) :
+      (pad 5 ("a" ++ (show index))) :
       (tabs (commutes op) "commutes") :
       (tabs (associates op) "associates") :
       (tabs (identity op) "identity") :
@@ -72,4 +78,4 @@ tally (index, op) =
      pad n str = take n (str ++ (replicate n ' '))
      tabs cond desc = if cond then (pad 10 desc) else (pad 10 "")
 
-main = putStrLn $ intercalate "\n" $ map tally (zip [0..] ops)
+main = putStrLn $ intercalate "\n" $ map tally (zip names (zip [0..] ops))
